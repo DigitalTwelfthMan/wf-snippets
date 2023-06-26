@@ -1,188 +1,69 @@
 
-$(document).ready(function(){
-$("#order-button").attr("disabled", "true");
+reviewCount = $('.review-shop-item').length;
+$('.rating-count-txt.count.shop').text(reviewCount)
+$('.rating-count-txt.count.shop.header').text(reviewCount + " reviews");
 
-var cov1 = $(".season-select-img.cover-btn-01");
-var cov2 = $(".season-select-img.cover-btn-02");
-var cov3 = $(".season-select-img.cover-btn-03");
-var cov4 = $(".season-select-img.cover-btn-04");
-var act1 = $(".season-select-img.cover-btn-01.active");
-var act2 = $(".season-select-img.cover-btn-02.active");
-var act3 = $(".season-select-img.cover-btn-03.active");
-var act4 = $(".season-select-img.cover-btn-04.active");
-var right = $(".disabled-arrow");
-
-$("#cover-right").click(function(){
-	var indexR = $(".cover-slide").index($('.cover-slide:not(.hide)'));
-	var plus = indexR + 1;
-	var currentR = $(".cover-slide")[indexR];
-	var next = $(".cover-slide")[plus];
-	var first = $(".cover-slide")[0];
-	
-	if (indexR === 3){
-		$(currentR).addClass('hide');
-		$(first).removeClass('hide');
-	} else {
-		$(currentR).addClass('hide');
-		$(next).removeClass('hide');
-	};
+var sum = 0;
+var count = 0;
+$('.review-shop-item').each(function() {
+    var rating = $(this).find('.rating-shop-txt').text();
+    rating = parseInt(rating);
+    if (isNaN(rating)) {
+        return true;
+    }
+    count++;
+    sum += rating;
 });
-
-$("#cover-left").click(function(){
-	var indexL = $(".cover-slide").index($('.cover-slide:not(.hide)'));
-	var minus = indexL - 1;
-	var currentL = $(".cover-slide")[indexL];
-	var prev = $(".cover-slide")[minus];
-	var last = $(".cover-slide")[3];
-	
-	if (indexL === 0){
-		$(currentL).addClass('hide');
-		$(last).removeClass('hide');
-	} else {
-		$(currentL).addClass('hide');
-		$(prev).removeClass('hide');
-	};
-});
-
-var arrow = function(){
-	var index = $(".cover-slide").index($('.cover-slide:not(.hide)'));
-	
-	if (index === 0){
-		$("#cover-left").css("display", "none");
-		$("#cover-right").css("display", "flex");
-	} else if (index === 3){
-		$("#cover-left").css("display", "flex");
-		$("#cover-right").css("display", "none");
-	} else {
-		$("#cover-left").css("display", "flex");
-		$("#cover-right").css("display", "flex");
-	};
-	
-	if (index === 0 && act1[0]){
-		$(right).addClass("hide");
-	} else if (index === 1 && act2[0]){
-		$(right).addClass("hide");
-	} else if (index === 2 && act3[0]){
-		$(right).addClass("hide");
-	} else if(index === 3 && act4[0]){
-		$(right).addClass("hide");
-	} else{
-		$(right).removeClass("hide");
-	};
-	
+var stars = {
+    empty: 'https://global-uploads.webflow.com/5cffd68e4c90e2c20be02014/5d922c4e72a61a57208d2098_Star_unactive.svg',
+    half: 'https://uploads-ssl.webflow.com/5cffd68e4c90e2c20be02014/5df253940060bf80d899412c_half%20star.svg',
+    full: 'https://global-uploads.webflow.com/5cffd68e4c90e2c20be02014/5d922c4e72a61a04fc8d2097_Star_active.svg',
 };
 
-$("#cover-left").click(arrow);
-$("#cover-right").click(arrow);
-
-cov1.on('click', function(){
-    cov1.removeClass("active greyed");
-    $(this).addClass("active");
-    var select1 = $(this).attr('id');
-    var dis1 = $(".season-select-img.cover-btn-01:not(.active)");
-    dis1.addClass("greyed");
-    right.addClass("hide");
-    act1 = $(".season-select-img.cover-btn-01.active");
-    
-    $(".season-form input[name='Issue 01']").val(select1);
-
-});
-
-cov2.on('click', function(){
-    cov2.removeClass("active greyed");
-    $(this).addClass("active");
-    var select2 = $(this).attr('id');
-    var dis2 = $(".season-select-img.cover-btn-02:not(.active)");
-    dis2.addClass("greyed");
-    right.addClass("hide");
-    act2 = $(".season-select-img.cover-btn-02.active");
-    
-    $(".season-form input[name='Issue 02']").val(select2);
-});
-
-cov3.on('click', function(){
-    cov3.removeClass("active greyed");
-    $(this).addClass("active");
-    var select3 = $(this).attr('id');
-    var dis3 = $(".season-select-img.cover-btn-03:not(.active)");
-    dis3.addClass("greyed");
-    right.addClass("hide");
-    act3 = $(".season-select-img.cover-btn-03.active");
-    
-    $(".season-form input[name='Issue 03']").val(select3);
-});
-
-cov4.on('click', function(){
-    cov4.removeClass("active greyed");
-    $(this).addClass("active");
-    var select4 = $(this).attr('id');
-    var dis4 = $(".season-select-img.cover-btn-04:not(.active)");
-    dis4.addClass("greyed");
-    right.addClass("hide");
-    act4 = $(".season-select-img.cover-btn-04.active");
-    $("#order-button").removeAttr("disabled", "true");
-    
-    $(".season-form input[name='Issue 04']").val(select4);
-});
-
-var reset = function(){
-	var first = $(".cover-slide")[0]
-  $(".season-select-img").removeClass("active greyed");
-  $('.gift-fields').addClass("hide");
-  $(".gift-fields input[name='Gift_Recipient']").val("");
-  $(".gift-fields textarea[name='Gift_Message']").val("");
-  $(".season-form input[name='shipto']").val("");
-  $(".season-form input[name='2:shipto']").val("");
-  $(".season-form input[name='2:Gift_Message']").val("");
-  $(".season-form input[name='2:quantity']").val("0");
-  act1 = $(".season-select-img.cover-btn-01.active");
-  act2 = $(".season-select-img.cover-btn-02.active");
-  act3 = $(".season-select-img.cover-btn-03.active");
-  act4 = $(".season-select-img.cover-btn-04.active");
-  $(".cover-slide").addClass("hide");
-  $(first).removeClass("hide");
-  	$("#cover-left").css("display", "none");
-	$("#cover-right").css("display", "flex");
-  right.removeClass("hide");
-  $('.gift-toggle input').prop( "checked", false );
-  $("#order-button").attr("disabled", "true");
+var headerStars = {
+    empty: 'https://uploads-ssl.webflow.com/5cffd68e4c90e2c20be02014/5df28192f3b0883c6d8b5d2b_head-Star_unactive.svg',
+    half: 'https://uploads-ssl.webflow.com/5cffd68e4c90e2c20be02014/5df2819137d24d607dcb4470_head-half-star.svg',
+    full: 'https://uploads-ssl.webflow.com/5cffd68e4c90e2c20be02014/5df281919bca42a0e6204a26_head-Star_active.svg',
 };
 
-$("#order-button").click(function(){setTimeout(reset, 1000)});
-$("#close-btn").click(function(){setTimeout(reset, 1000)});
+var mobiStars = {
+    empty: 'https://global-uploads.webflow.com/5cffd68e4c90e2c20be02014/5d922c4e72a61a57208d2098_Star_unactive.svg',
+    half: 'https://uploads-ssl.webflow.com/5cffd68e4c90e2c20be02014/5df253940060bf80d899412c_half%20star.svg',
+    full: 'https://global-uploads.webflow.com/5cffd68e4c90e2c20be02014/5d922c4e72a61a04fc8d2097_Star_active.svg',
+};
 
+var avg = sum / count;
+var decimal = avg - Math.floor(avg);
+var data = {};
+var headerData = {};
+var mobiData = {};
 
-	$('.gift-fields').addClass("hide");
-
-	$('.gift-toggle input').change(function(){
-    if($(this).prop("checked")) {
-      $('.gift-fields').removeClass("hide");
+for (var i = 1; i <= 5; i++) {
+    if (i <= avg) {
+        data[i] = stars.full;
+				headerData[i] = headerStars.full;
+        mobiData[i] = mobiStars.full;
+    } else if (i > Math.ceil(avg)) {
+        data[i] = stars.empty;
+				headerData[i] = headerStars.empty;
+        mobiData[i] = mobiStars.empty;
+    } else if (decimal <= 0.3) {
+        data[i] = stars.empty;
+				headerData[i] = headerStars.empty;
+        mobiData[i] = mobiStars.empty;
+    } else if(decimal >= 0.7) {
+        data[i] = stars.full;
+				headerData[i] = headerStars.full;
+        mobiData[i] = mobiStars.full;
     } else {
-      $('.gift-fields').addClass("hide");
-      $(".gift-fields input[name='Gift_Recipient']").val("");
-      $(".gift-fields textarea[name='Gift_Message']").val("");
-      $(".season-form input[name='shipto']").val("");
-      $(".season-form input[name='2:shipto']").val("");
-      $(".season-form input[name='2:Gift_Message']").val("");
-      $(".season-form input[name='2:quantity']").val("0");
+        data[i] = stars.half;
+				headerData[i] = headerStars.half;
+        mobiData[i] = mobiStars.half;
     }
-  });
-  
-  $(".gift-fields input[name='Gift_Recipient']").on('keyup keypress', function(e) {
-    var giftRecipient = $(this).val();
-    $(".season-form input[name='shipto']").val(giftRecipient);
-    $(".season-form input[name='2:shipto']").val(giftRecipient);
-  });
-  
-  $(".gift-fields textarea[name='Gift_Message']").on('keyup keypress', function(e) {
-    var giftMessage = $(this).val();
-    $(".season-form input[name='2:Gift_Message']").val(giftMessage);
-
-    if (giftMessage != '') {
-      $(".season-form input[name='2:quantity']").val("1");
-    } else {
-      $(".season-form input[name='2:quantity']").val("0");
-    }
-  });
-  
-});
+}
+$('#shop-rating img').each(function (key)
+{$(this).attr('src', data[key + 1]);});
+$('#header-shop-rating img').each(function (key)
+{$(this).attr('src', headerData[key + 1]);});
+$('#shop-rating-mobile img').each(function (key)
+{$(this).attr('src', mobiData[key + 1]);});
